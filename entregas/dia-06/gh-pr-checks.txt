@@ -1,0 +1,1 @@
+Pruebas de Playwright	fail	53s	https://github.com/AngelF007/mini-inventario/actions/runs/44585253168/job/135776329279	

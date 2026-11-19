@@ -1,6 +1,9 @@
 // Interfaz de Mini Inventario. No sabe dónde se guardan los datos:
-// todo pasa por public/productos.js.
-import { listarProductos, agregarProducto, actualizarProducto } from './productos.js';
+// todo (productos e inicio de sesión) pasa por public/productos.js.
+import {
+  listarProductos, agregarProducto, actualizarProducto, eliminarProducto,
+  obtenerUsuario, alCambiarSesion, iniciarSesion, registrarse, cerrarSesion,
+} from './productos.js';
 
 const $ = (id) => document.getElementById(id);
 const formAgregar = $('form-agregar');
@@ -17,7 +20,10 @@ const tabla = $('tabla');
 const cuerpo = $('cuerpo');
 
 let editandoId = null;
+let confirmandoId = null;
 let vista = 'todos';
+let productos = [];
+let usuarioActual = null;
 
 function estaBajoMinimo(producto) {
   return producto.cantidad < producto.minimo;
@@ -57,7 +63,7 @@ function boton(texto, alClic, clase) {
 function salirDeEdicion() {
   editandoId = null;
   mostrarError(errorLista, '');
-  render();
+  pintar();
 }
 
 // La barra llega al 100 % cuando la cantidad es el doble del mínimo;
@@ -91,9 +97,30 @@ function filaNormal(p) {
   const tdAcciones = crear('td', { clase: 'acciones' });
   tdAcciones.append(boton('Editar', () => {
     editandoId = p.id;
+    confirmandoId = null;
     mostrarError(errorLista, '');
-    render();
+    pintar();
   }, 'secundario'));
+  if (confirmandoId === p.id) {
+    tdAcciones.append(
+      boton('Sí, eliminar', async () => {
+        try {
+          await eliminarProducto(p.id);
+          confirmandoId = null;
+          await render();
+        } catch (error) {
+          mostrarError(errorLista, error.message);
+        }
+      }, 'peligro confirmar'),
+      boton('No', () => { confirmandoId = null; pintar(); }, 'texto'),
+    );
+  } else {
+    tdAcciones.append(boton('Eliminar', () => {
+      confirmandoId = p.id;
+      editandoId = null;
+      pintar();
+    }, 'peligro'));
+  }
   tr.append(
     tdSku,
     crear('td', { clase: 'producto', texto: p.nombre }),
@@ -138,7 +165,9 @@ function filaEdicion(p) {
         cantidad: campos.cantidad.value,
         minimo: campos.minimo.value,
       });
-      salirDeEdicion();
+      editandoId = null;
+      mostrarError(errorLista, '');
+      await render();
     } catch (error) {
       mostrarError(errorLista, error.message);
     }
@@ -172,8 +201,19 @@ function pintarResumen(todos, bajos) {
   $('n-bajo').textContent = bajos;
 }
 
+// Vuelve a pedir los productos a la base y los pinta.
 async function render() {
-  const todos = await listarProductos();
+  try {
+    productos = await listarProductos();
+    mostrarError(errorLista, '');
+  } catch (error) {
+    mostrarError(errorLista, error.message);
+  }
+  pintar();
+}
+
+function pintar() {
+  const todos = productos;
   const bajos = todos.filter(estaBajoMinimo).length;
   pintarResumen(todos, bajos);
 
@@ -191,6 +231,7 @@ async function render() {
   } else {
     vacioTexto.textContent = 'No hay productos bajo mínimo.';
   }
+  $('cargando').hidden = true;
   vacio.hidden = visibles.length > 0;
   tabla.hidden = visibles.length === 0;
 
@@ -220,10 +261,93 @@ formAgregar.addEventListener('submit', async (e) => {
 botonesVista.forEach((b) => b.addEventListener('click', () => {
   vista = b.dataset.vista;
   botonesVista.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-  render();
+  pintar();
 }));
 
-buscar.addEventListener('input', render);
+buscar.addEventListener('input', pintar);
 formAgregar.addEventListener('input', () => mostrarError(errorAgregar, ''));
 
-render();
+// ---------- Inicio de sesión ----------
+
+const pantallaAcceso = $('pantalla-acceso');
+const pantallaInventario = $('pantalla-inventario');
+const formAcceso = $('form-acceso');
+const errorAcceso = $('error-acceso');
+const avisoAcceso = $('aviso-acceso');
+const botonAcceso = $('boton-acceso');
+const tabEntrar = $('tab-entrar');
+const tabRegistro = $('tab-registro');
+let modoAcceso = 'entrar';
+
+function elegirModo(modo) {
+  modoAcceso = modo;
+  tabEntrar.setAttribute('aria-selected', String(modo === 'entrar'));
+  tabRegistro.setAttribute('aria-selected', String(modo === 'registro'));
+  botonAcceso.textContent = modo === 'entrar' ? 'Iniciar sesión' : 'Crear cuenta';
+  formAcceso.elements.contrasena.autocomplete = modo === 'entrar' ? 'current-password' : 'new-password';
+  mostrarError(errorAcceso, '');
+  mostrarError(avisoAcceso, '');
+}
+tabEntrar.addEventListener('click', () => elegirModo('entrar'));
+tabRegistro.addEventListener('click', () => elegirModo('registro'));
+
+formAcceso.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const correo = formAcceso.elements.correo.value;
+  const contrasena = formAcceso.elements.contrasena.value;
+  mostrarError(errorAcceso, '');
+  mostrarError(avisoAcceso, '');
+  botonAcceso.disabled = true;
+  try {
+    if (modoAcceso === 'entrar') {
+      await iniciarSesion(correo, contrasena);
+    } else {
+      const { necesitaConfirmar } = await registrarse(correo, contrasena);
+      if (necesitaConfirmar) {
+        mostrarError(avisoAcceso, 'Cuenta creada. Revisa tu correo para confirmarla y después inicia sesión.');
+        elegirModo('entrar');
+        mostrarError(avisoAcceso, 'Cuenta creada. Revisa tu correo para confirmarla y después inicia sesión.');
+      }
+    }
+  } catch (error) {
+    mostrarError(errorAcceso, error.message);
+  } finally {
+    botonAcceso.disabled = false;
+  }
+});
+
+$('salir').addEventListener('click', async () => {
+  try {
+    await cerrarSesion();
+  } catch (error) {
+    mostrarError(errorLista, error.message);
+  }
+});
+
+async function mostrarPantalla(usuario) {
+  const cambio = (usuario?.id ?? null) !== (usuarioActual?.id ?? null);
+  usuarioActual = usuario;
+  $('usuario').hidden = !usuario;
+  $('usuario-correo').textContent = usuario?.email ?? '';
+  pantallaAcceso.hidden = Boolean(usuario);
+  pantallaInventario.hidden = !usuario;
+  if (!usuario) {
+    productos = [];
+    formAcceso.reset();
+    formAcceso.elements.correo.focus();
+    return;
+  }
+  if (cambio) {
+    productos = [];
+    editandoId = null;
+    confirmandoId = null;
+    cuerpo.replaceChildren();
+    tabla.hidden = true;
+    vacio.hidden = true;
+    $('cargando').hidden = false;
+    await render();
+  }
+}
+
+alCambiarSesion((usuario) => { mostrarPantalla(usuario); });
+mostrarPantalla(await obtenerUsuario());

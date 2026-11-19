@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-11-19 · **Repositorio:** https://github.com/AngelF007/mini-inventario · **Rama:** `dia-03-web` · **Agente:** Claude
 
-![Mini Inventario funcionando con 5 productos, 2 bajo mínimo](captura-mini-inventario.png)
+![Mini Inventario funcionando con 5 productos, 2 bajo mínimo](Captura%201.png)
 
 ---
 

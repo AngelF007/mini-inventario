@@ -1,8 +1,9 @@
 // Recorrido exploratorio (Día 5): inicia sesión con el usuario de prueba,
 // agrega un producto bajo el mínimo, toma capturas en escritorio y móvil
 // y guarda los errores de consola. No muestra ni guarda la contraseña.
-// Uso: con la app corriendo (npm start), en otra terminal: npm run explorar
+// Uso: npm run explorar   (si la app no está corriendo, el script la prende y la apaga al final)
 import { chromium } from '@playwright/test';
+import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
@@ -17,6 +18,27 @@ if (!TEST_EMAIL || !TEST_PASSWORD) {
 
 const carpeta = path.join('entregas', 'dia-05');
 mkdirSync(carpeta, { recursive: true });
+
+async function estaViva() {
+  try {
+    return (await fetch(`${URL}/health`)).ok;
+  } catch {
+    return false;
+  }
+}
+
+// Si la app no responde, la arranca aquí mismo (igual que npm start).
+let servidor = null;
+if (!(await estaViva())) {
+  console.log('La app no estaba corriendo: la arranco...');
+  servidor = spawn(process.execPath, ['server.js'], { stdio: 'inherit' });
+  for (let i = 0; i < 30 && !(await estaViva()); i++) await new Promise((r) => setTimeout(r, 500));
+  if (!(await estaViva())) {
+    console.error('No pude arrancar la app. Revisa que exista .env y prueba con npm start.');
+    servidor.kill();
+    process.exit(1);
+  }
+}
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
@@ -78,6 +100,7 @@ try {
     pasos.push(`No se pudo borrar ${sku}: ${e.message}`);
   }
   await browser.close();
+  servidor?.kill();
 }
 
 const reporte = [

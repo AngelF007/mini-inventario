@@ -1,0 +1,66 @@
+Pruebas de Playwright	Correr las pruebas de Playwright	﻿2026-11-19T18:12:36.4038655Z ##[group]Run npx playwright test
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4039033Z ^[[36;1mnpx playwright test^[[0m
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4090298Z shell: /usr/bin/bash -e {0}
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4090576Z env:
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4091150Z   SUPABASE_URL: ***
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4091504Z   SUPABASE_KEY: ***
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4091744Z   TEST_EMAIL: ***
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4091983Z   TEST_PASSWORD: ***
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4092208Z   CI: true
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:36.4092407Z ##[endgroup]
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:38.1363478Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:38.1364268Z Running 6 tests using 1 worker
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:38.1364591Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:41.3492813Z   ✓  1 [chromium] › tests/inventario.spec.js:10:3 › Inicio de sesión › inicia sesión con el usuario de prueba (1.3s)
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:51.8072628Z   ✘  2 [chromium] › tests/inventario.spec.js:17:3 › Inicio de sesión › rechaza una contraseña incorrecta (10.4s)
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:53.7578356Z   ✓  3 [chromium] › tests/inventario.spec.js:41:3 › Productos › agrega un producto (1.4s)
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:55.3773636Z   ✓  4 [chromium] › tests/inventario.spec.js:51:3 › Productos › marca un producto bajo el mínimo (1.6s)
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:56.8650029Z   ✓  5 [chromium] › tests/inventario.spec.js:69:3 › Productos › edita la cantidad y cambia el estado (1.5s)
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6493066Z   ✓  6 [chromium] › tests/inventario.spec.js:81:3 › Productos › no guarda con campos vacíos (767ms)
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6970643Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6975621Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6986616Z   1) [chromium] › tests/inventario.spec.js:17:3 › Inicio de sesión › rechaza una contraseña incorrecta 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6987486Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6987881Z     Error: expect(locator).toHaveText(expected) failed
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6988569Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6988843Z     Locator:  locator('#error-acceso')
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6989688Z     Expected: "Correo o contraseña incorrectos."
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6990600Z     Received: "El correo o la contraseña no coinciden."
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6991237Z     Timeout:  10000ms
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6991521Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6991732Z     Call log:
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6992406Z       - Expect "toHaveText" locator('#error-acceso') with timeout 10000ms
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6993217Z       - waiting for locator('#error-acceso')
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6994464Z         3 × locator resolved to <p hidden="" role="alert" class="error" id="error-acceso"></p>
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6995324Z           - unexpected value ""
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6996627Z         21 × locator resolved to <p role="alert" class="error" id="error-acceso">El correo o la contraseña no coinciden.</p>
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6998084Z            - unexpected value "El correo o la contraseña no coinciden."
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6998890Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6998907Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.6999533Z       17 |   test('rechaza una contraseña incorrecta', async ({ page }) => {
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7000610Z       18 |     await iniciarSesion(page, EMAIL, 'contrasena-incorrecta-123');
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7002088Z     > 19 |     await expect(page.locator('#error-acceso')).toHaveText('Correo o contraseña incorrectos.');
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7003127Z          |                                                 ^
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7003999Z       20 |     await expect(page.locator('#pantalla-acceso')).toBeVisible();
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7005120Z       21 |     await expect(page.locator('#pantalla-inventario')).toBeHidden();
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7005925Z       22 |   });
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7006787Z         at /home/runner/work/mini-inventario/mini-inventario/tests/inventario.spec.js:19:49
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7007511Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7008642Z     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7010380Z     test-results/inventario-Inicio-de-sesió-4ca2c-a-una-contraseña-incorrecta-chromium/test-failed-1.png
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7012166Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7012742Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7013842Z     Error Context: test-results/inventario-Inicio-de-sesió-4ca2c-a-una-contraseña-incorrecta-chromium/error-context.md
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7015299Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7016146Z     attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7017750Z     test-results/inventario-Inicio-de-sesió-4ca2c-a-una-contraseña-incorrecta-chromium/trace.zip
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7019607Z     Usage:
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7019855Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7021033Z         npx playwright show-trace test-results/inventario-Inicio-de-sesió-4ca2c-a-una-contraseña-incorrecta-chromium/trace.zip
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7022046Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7022769Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7023677Z 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7023842Z   1 failed
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7024874Z     [chromium] › tests/inventario.spec.js:17:3 › Inicio de sesión › rechaza una contraseña incorrecta 
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7025841Z   5 passed (20.5s)
+Pruebas de Playwright	Correr las pruebas de Playwright	2026-11-19T18:12:57.7467913Z ##[error]Process completed with exit code 1.

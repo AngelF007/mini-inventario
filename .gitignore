@@ -1,0 +1,22 @@
+# Secretos
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+dist/
+build/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/

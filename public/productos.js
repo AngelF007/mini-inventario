@@ -18,8 +18,17 @@ function escribir(productos) {
   localStorage.setItem(CLAVE, JSON.stringify(productos));
 }
 
+// Igual que el tipo integer de Postgres (docs/diseno.md): de 0 a 2147483647.
+const MAXIMO_ENTERO = 2147483647;
+
 function esEnteroNoNegativo(valor) {
-  return Number.isInteger(valor) && valor >= 0;
+  return Number.isInteger(valor) && valor >= 0 && valor <= MAXIMO_ENTERO;
+}
+
+// Solo dígitos: evita que Number() acepte cosas como '1e2' o '0x10'.
+function aEntero(valor) {
+  const texto = String(valor ?? '').trim();
+  return /^\d+$/.test(texto) ? Number(texto) : NaN;
 }
 
 // Limpia y valida los datos igual que lo hará la tabla en Supabase (docs/diseno.md).
@@ -27,8 +36,8 @@ function validar({ nombre, sku, cantidad, minimo }) {
   const limpio = {
     nombre: String(nombre ?? '').trim(),
     sku: String(sku ?? '').trim(),
-    cantidad: Number(cantidad),
-    minimo: Number(minimo),
+    cantidad: aEntero(cantidad),
+    minimo: aEntero(minimo),
   };
   const faltan = [];
   if (!limpio.nombre) faltan.push('nombre');
@@ -42,10 +51,10 @@ function validar({ nombre, sku, cantidad, minimo }) {
   if (limpio.nombre.length > 100) throw new Error('El nombre debe tener 100 caracteres o menos.');
   if (limpio.sku.length > 50) throw new Error('El SKU debe tener 50 caracteres o menos.');
   if (!esEnteroNoNegativo(limpio.cantidad)) {
-    throw new Error('La cantidad debe ser un número entero de 0 o más.');
+    throw new Error('La cantidad debe ser un número entero de 0 a 2147483647.');
   }
   if (!esEnteroNoNegativo(limpio.minimo)) {
-    throw new Error('El mínimo debe ser un número entero de 0 o más.');
+    throw new Error('El mínimo debe ser un número entero de 0 a 2147483647.');
   }
   return limpio;
 }
@@ -55,8 +64,9 @@ function skuRepetido(productos, sku, idIgnorado) {
   return productos.some((p) => p.id !== idIgnorado && p.sku === sku);
 }
 
+// Ordenados por nombre, como el select de docs/diseno.md.
 export async function listarProductos() {
-  return leer();
+  return leer().sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
 }
 
 export async function agregarProducto(datos) {

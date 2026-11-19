@@ -17,10 +17,35 @@
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><path class="b" d="M9 23l1.2-4.8L20.4 8a1.6 1.6 0 0 1 2.3 0l1.3 1.3a1.6 1.6 0 0 1 0 2.3L13.8 21.8 9 23z"/></svg>
       <span>Mini Inventario <span class="giro">Papelería</span></span>
     </a>
-    <p class="modo">Versión local: los datos se guardan en este navegador</p>
+    <div id="usuario" class="usuario" hidden>
+      <span id="usuario-correo"></span>
+      <button type="button" id="salir" class="salir">Cerrar sesión</button>
+    </div>
   </header>
 
-  <main>
+  <main id="pantalla-acceso" class="acceso" hidden>
+    <section class="acceso-tarjeta" aria-labelledby="t-acceso">
+      <h1 id="t-acceso">Entra a tu inventario</h1>
+      <p class="detalle">Cada cuenta tiene su propio inventario. Nadie más ve tus productos.</p>
+      <div class="pestanas" role="tablist" aria-label="Elegir acción">
+        <button type="button" role="tab" id="tab-entrar" aria-selected="true" aria-controls="form-acceso">Iniciar sesión</button>
+        <button type="button" role="tab" id="tab-registro" aria-selected="false" aria-controls="form-acceso">Crear cuenta</button>
+      </div>
+      <form id="form-acceso" novalidate>
+        <label class="campo">Correo
+          <input name="correo" type="email" autocomplete="email" required placeholder="tu@correo.com">
+        </label>
+        <label class="campo">Contraseña
+          <input name="contrasena" type="password" autocomplete="current-password" required minlength="8" placeholder="Mínimo 8 caracteres">
+        </label>
+        <button type="submit" class="primario" id="boton-acceso">Iniciar sesión</button>
+      </form>
+      <p id="error-acceso" class="error" role="alert" hidden></p>
+      <p id="aviso-acceso" class="aviso" role="status" hidden></p>
+    </section>
+  </main>
+
+  <main id="pantalla-inventario" hidden>
     <section class="resumen" aria-live="polite">
       <h1 id="titular">Inventario</h1>
       <p id="detalle" class="detalle"></p>
@@ -60,6 +85,7 @@
       </div>
 
       <p id="error-lista" class="error" role="alert" hidden></p>
+      <p id="cargando" class="vacio cargando" hidden>Cargando tus productos…</p>
 
       <div id="vacio" class="vacio" hidden>
         <p id="vacio-texto"></p>
@@ -87,6 +113,7 @@
     <p>Mini Inventario para papelería. Hecho por AngelF007.</p>
   </footer>
 
+  <script src="/config.js"></script>
   <script type="module" src="app.js"></script>
 </body>
 </html>

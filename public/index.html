@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mini Inventario</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>📦 Mini Inventario</h1>
+      <p class="sub">Registra tus productos y revisa cuáles hay que reabastecer.</p>
+    </header>
+
+    <section class="tarjeta">
+      <h2>Agregar producto</h2>
+      <form id="form-agregar" novalidate>
+        <label>Nombre <input name="nombre" required maxlength="100" autocomplete="off"></label>
+        <label>SKU <input name="sku" required maxlength="50" autocomplete="off"></label>
+        <label>Cantidad <input name="cantidad" type="number" min="0" step="1" required></label>
+        <label>Mínimo <input name="minimo" type="number" min="0" step="1" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+      <p id="error-agregar" class="error" role="alert" hidden></p>
+    </section>
+
+    <section class="tarjeta">
+      <div class="barra">
+        <h2>Mis productos</h2>
+        <p id="contador" class="contador" aria-live="polite"></p>
+        <label class="filtro"><input type="checkbox" id="filtro-bajo"> Solo bajo mínimo</label>
+      </div>
+      <p id="error-lista" class="error" role="alert" hidden></p>
+      <p id="vacio" class="vacio" hidden></p>
+      <div class="tabla-envoltura">
+        <table id="tabla" hidden>
+          <thead>
+            <tr><th>Nombre</th><th>SKU</th><th class="num">Cantidad</th><th class="num">Mínimo</th><th>Estado</th><th></th></tr>
+          </thead>
+          <tbody id="cuerpo"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

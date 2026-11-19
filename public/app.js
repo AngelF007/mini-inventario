@@ -53,6 +53,12 @@ function crear(etiqueta, { clase, texto } = {}) {
   return el;
 }
 
+// En celular la tabla se vuelve tarjetas y cada número muestra su etiqueta.
+function conEtiqueta(td, etiqueta) {
+  td.dataset.etiqueta = etiqueta;
+  return td;
+}
+
 function boton(texto, alClic, clase) {
   const b = crear('button', { clase, texto });
   b.type = 'button';
@@ -124,8 +130,8 @@ function filaNormal(p) {
   tr.append(
     tdSku,
     crear('td', { clase: 'producto', texto: p.nombre }),
-    crear('td', { clase: 'num', texto: String(p.cantidad) }),
-    crear('td', { clase: 'num minimo', texto: String(p.minimo) }),
+    conEtiqueta(crear('td', { clase: 'num', texto: String(p.cantidad) }), 'Cantidad'),
+    conEtiqueta(crear('td', { clase: 'num minimo', texto: String(p.minimo) }), 'Mínimo'),
     tdNivel,
     tdAcciones,
   );
@@ -152,10 +158,12 @@ function filaEdicion(p) {
   };
   for (const [clave, input] of Object.entries(campos)) {
     const td = crear('td', { clase: clave === 'cantidad' || clave === 'minimo' ? 'num' : '' });
+    if (clave === 'cantidad') conEtiqueta(td, 'Cantidad');
+    if (clave === 'minimo') conEtiqueta(td, 'Mínimo');
     td.append(input);
     tr.append(td);
   }
-  tr.append(crear('td'));
+  tr.append(crear('td', { clase: 'vacia' }));
 
   const guardar = async () => {
     try {
@@ -192,10 +200,10 @@ function pintarResumen(todos, bajos) {
     detalle.textContent = 'Agrega tu primer producto con el formulario de abajo.';
   } else if (bajos > 0) {
     titular.textContent = `${plural(bajos, 'producto', 'productos')} por reabastecer`;
-    detalle.textContent = `De ${plural(todos.length, 'producto', 'productos')} registrados, con ${plural(unidades, 'unidad', 'unidades')} en total.`;
+    detalle.textContent = `De ${plural(todos.length, 'producto registrado', 'productos registrados')}, con ${plural(unidades, 'unidad', 'unidades')} en total.`;
   } else {
     titular.textContent = 'Todo tu inventario está por encima del mínimo';
-    detalle.textContent = `${plural(todos.length, 'producto', 'productos')} registrados, con ${plural(unidades, 'unidad', 'unidades')} en total.`;
+    detalle.textContent = `${plural(todos.length, 'producto registrado', 'productos registrados')}, con ${plural(unidades, 'unidad', 'unidades')} en total.`;
   }
   $('n-todos').textContent = todos.length;
   $('n-bajo').textContent = bajos;

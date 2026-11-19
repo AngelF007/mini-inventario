@@ -1,26 +1,34 @@
-/* Mini Inventario — estilo "etiqueta de anaquel":
-   concreto de bodega, tinta azul marino, verde de pintura industrial
-   y rojo de alerta solo para lo que hay que reabastecer. */
+/* Mini Inventario · Papelería — estilo "hoja de cuaderno":
+   fondo cuadriculado, azul de pluma, rojo del margen para lo que falta
+   y amarillo de marcatextos para resaltar. */
 :root {
-  --concreto: #eef1f0;
+  --hoja: #f7f9fc;
+  --cuadricula: #dbe5f3;
   --papel: #ffffff;
-  --tinta: #17212b;
-  --tinta-suave: #55636f;
-  --linea: #cfd7d5;
-  --verde: #1f6f5b;
-  --verde-claro: #e3efeb;
-  --rojo: #c2361f;
-  --rojo-claro: #fbe9e5;
-  --foco: #2b6cb0;
-  --radio-chico: 4px;
-  --radio: 8px;
-  --fuente: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --tinta: #1c2433;
+  --tinta-suave: #5b6578;
+  --linea: #d3dbe8;
+  --verde: #1d3fbf;          /* azul de pluma: color principal */
+  --verde-claro: #e6ecfb;
+  --rojo: #d6342b;           /* rojo del margen del cuaderno */
+  --rojo-claro: #fdeceb;
+  --marcatextos: #ffe45c;
+  --foco: #1d3fbf;
+  --radio-chico: 6px;
+  --radio: 12px;
+  --fuente: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: light;
 }
 
 * { box-sizing: border-box; }
 
-html { background: var(--concreto); }
+html {
+  background-color: var(--hoja);
+  background-image:
+    linear-gradient(var(--cuadricula) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cuadricula) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
 
 body {
   margin: 0;
@@ -28,7 +36,6 @@ body {
   font-size: 16px;
   line-height: 1.5;
   color: var(--tinta);
-  font-variation-settings: "wdth" 100;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -47,19 +54,24 @@ body {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
   gap: 8px 24px;
   padding: 14px clamp(16px, 4vw, 48px);
-  background: var(--tinta);
+  background: var(--verde);
   color: #fff;
 }
 .marca {
   display: inline-flex; align-items: center; gap: 10px;
   color: inherit; text-decoration: none;
   font-weight: 700; font-size: 1.05rem;
-  font-variation-settings: "wdth" 112;
 }
 .marca svg { width: 28px; height: 28px; }
-.marca svg rect:first-child { fill: var(--verde); }
-.marca svg .b { fill: #fff; }
-.modo { margin: 0; font-size: .875rem; color: #b8c4cc; }
+.marca svg rect:first-child { fill: #fff; }
+.marca svg .b { fill: var(--verde); }
+.modo { margin: 0; font-size: .875rem; color: #c9d3ff; }
+.giro {
+  margin-left: 6px; padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--marcatextos); color: var(--tinta);
+  font-size: .85rem; font-weight: 700;
+}
 
 main {
   width: 100%;
@@ -76,7 +88,6 @@ h2 {
   margin: 0;
   font-size: 1.125rem;
   font-weight: 700;
-  font-variation-settings: "wdth" 110;
 }
 
 /* ---------- Titular: lo más importante de la página ---------- */
@@ -86,9 +97,8 @@ h2 {
   font-weight: 800;
   font-size: clamp(2.25rem, 6.5vw, 4.5rem);
   line-height: .98;
-  letter-spacing: -.01em;
-  font-variation-settings: "wdth" 125;
-  max-width: 18ch;
+  letter-spacing: -.02em;
+  max-width: 20ch;
   text-wrap: balance;
 }
 .resumen.alerta #titular { color: var(--rojo); }
@@ -101,7 +111,9 @@ h2 {
   padding: 20px;
   background: var(--papel);
   border: 1px solid var(--linea);
-  border-left: 6px solid var(--verde);
+  border-left: 3px double var(--rojo);
+  padding-left: 28px;
+  box-shadow: 0 1px 0 var(--linea), 0 8px 24px -16px rgba(28, 36, 51, .35);
   border-radius: var(--radio);
 }
 form {
@@ -133,7 +145,7 @@ button {
   white-space: nowrap;
 }
 .primario { background: var(--verde); color: #fff; }
-.primario:hover { background: #185a4a; }
+.primario:hover { background: #17329a; }
 .secundario { background: transparent; color: var(--tinta); border-color: var(--linea); }
 .secundario:hover { border-color: var(--tinta-suave); }
 .texto { background: transparent; color: var(--tinta-suave); padding-inline: 10px; }
@@ -159,7 +171,7 @@ button {
 .vistas {
   display: inline-flex;
   padding: 3px;
-  background: #dfe5e3;
+  background: #e3e9f4;
   border-radius: var(--radio);
 }
 .vista {
@@ -193,6 +205,7 @@ button {
   background: var(--papel);
   border: 1px solid var(--linea);
   border-radius: var(--radio);
+  box-shadow: 0 8px 24px -16px rgba(28, 36, 51, .35);
 }
 table { width: 100%; border-collapse: collapse; }
 th, td { padding: 12px 14px; text-align: left; vertical-align: middle; }
@@ -200,23 +213,23 @@ th {
   font-size: .8125rem; font-weight: 600;
   color: var(--tinta-suave);
   border-bottom: 1px solid var(--linea);
-  background: #f7f9f8;
+  background: #f3f6fb;
 }
-tbody tr + tr td { border-top: 1px solid #e6ebe9; }
+tbody tr + tr td { border-top: 1px solid #e8edf5; }
 .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 td.num { font-size: 1.0625rem; font-weight: 600; }
 td.minimo { color: var(--tinta-suave); font-weight: 400; }
 
-/* SKU como etiqueta de anaquel */
+/* SKU como etiqueta de precio de papelería */
 .sku {
   display: inline-block;
-  padding: 3px 8px;
-  border: 1px solid var(--tinta);
-  border-radius: 2px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--marcatextos);
+  color: var(--tinta);
   font-weight: 700;
   font-size: .8125rem;
   letter-spacing: .02em;
-  font-variation-settings: "wdth" 80;
   white-space: nowrap;
 }
 .producto { font-weight: 600; }
@@ -228,7 +241,7 @@ td.minimo { color: var(--tinta-suave); font-weight: 400; }
   position: relative;
   height: 8px;
   border-radius: 999px;
-  background: #e3e8e6;
+  background: #e3e9f4;
   overflow: visible;
 }
 .barra .relleno {
@@ -243,20 +256,21 @@ td.minimo { color: var(--tinta-suave); font-weight: 400; }
 .estado { font-size: .8125rem; font-weight: 600; color: var(--verde); }
 
 tr.bajo td { background: var(--rojo-claro); }
-tr.bajo .sku { border-color: var(--rojo); color: var(--rojo); }
+tr.bajo .sku { background: var(--rojo); color: #fff; }
 tr.bajo .barra .relleno { background: var(--rojo); }
 tr.bajo .estado { color: var(--rojo); }
 
 .acciones { text-align: right; white-space: nowrap; }
 .acciones button + button { margin-left: 6px; }
 
-tr.editando td { background: #f4f8f7; }
+tr.editando td { background: #f3f6fd; }
 tr.editando input { padding: 8px 10px; }
 tr.editando td.num input { width: 96px; text-align: right; }
 
 .pie {
   padding: 20px clamp(16px, 4vw, 48px);
   border-top: 1px solid var(--linea);
+  background: var(--papel);
   color: var(--tinta-suave);
   font-size: .875rem;
 }

@@ -6,6 +6,8 @@ Mini Inventario es una aplicación web sencilla para llevar el control de produc
 - **Servidor MCP:** Python 3.12
 - **Control de versiones:** Git + GitHub
 
+🔗 **Ver el proyecto y sus archivos:** [github.com/AngelF007/mini-inventario](https://github.com/AngelF007/mini-inventario)
+
 ---
 
 ## ✅ Requisitos
@@ -63,13 +65,23 @@ Si la terminal no reconoce `node` o `python` después de instalarlos, ciérrala 
 
 ```
 mini-inventario/
-├── .gitignore          # Archivos que no se suben (secretos, dependencias)
-├── CLAUDE.md           # Reglas que sigue el agente de IA en cada sesión
-├── README.md           # Este archivo
+├── .gitignore
+├── CLAUDE.md
+├── README.md
 └── entregas/
     └── dia-01/
-        └── README.md   # Bitácora y evidencia del Día 1
+        └── README.md
 ```
+
+Haz clic en cualquier archivo para abrirlo:
+
+| Archivo | Para qué sirve |
+|---|---|
+| [`.gitignore`](https://github.com/AngelF007/mini-inventario/blob/main/.gitignore) | Archivos que no se suben (secretos y dependencias) |
+| [`CLAUDE.md`](https://github.com/AngelF007/mini-inventario/blob/main/CLAUDE.md) | Reglas que sigue el agente de IA en cada sesión |
+| [`README.md`](https://github.com/AngelF007/mini-inventario/blob/main/README.md) | Este archivo |
+| [`entregas/dia-01/`](https://github.com/AngelF007/mini-inventario/tree/main/entregas/dia-01) | Carpeta de entrega del Día 1 |
+| [`entregas/dia-01/README.md`](https://github.com/AngelF007/mini-inventario/blob/main/entregas/dia-01/README.md) | Bitácora y evidencia del Día 1 |
 
 ---
 
@@ -79,7 +91,7 @@ mini-inventario/
 2. **Nunca** se suben llaves, tokens ni archivos `.env` (están excluidos en `.gitignore`).
 3. El agente debe **pedir aprobación** antes de borrar datos o desplegar.
 
-Las reglas completas para el agente están en [`CLAUDE.md`](CLAUDE.md).
+Las reglas completas para el agente están en [`CLAUDE.md`](https://github.com/AngelF007/mini-inventario/blob/main/CLAUDE.md).
 
 ---
 
@@ -87,7 +99,7 @@ Las reglas completas para el agente están en [`CLAUDE.md`](CLAUDE.md).
 
 | Día | Tema | Estado |
 |---|---|---|
-| 1 | Repositorio y entorno de trabajo | ✅ Terminado |
+| 1 | Repositorio y entorno de trabajo · [ver entrega](https://github.com/AngelF007/mini-inventario/tree/main/entregas/dia-01) | ✅ Terminado |
 | 2–10 | Próximamente | ⏳ |
 
 ---

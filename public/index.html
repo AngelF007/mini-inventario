@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mini Inventario · Papelería</title>
+  <meta name="description" content="Inventario de papelería: lleva el control de cuadernos, plumas y más, y mira qué hay que reabastecer.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231D3FBF'/%3E%3Cpath fill='%23FFE45C' d='M9 23l1.2-4.8L20.4 8a1.6 1.6 0 0 1 2.3 0l1.3 1.3a1.6 1.6 0 0 1 0 2.3L13.8 21.8 9 23z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400..800&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="marca" href="/" aria-label="Mini Inventario, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7"/><path class="b" d="M9 23l1.2-4.8L20.4 8a1.6 1.6 0 0 1 2.3 0l1.3 1.3a1.6 1.6 0 0 1 0 2.3L13.8 21.8 9 23z"/></svg>
+      <span>Mini Inventario <span class="giro">Papelería</span></span>
+    </a>
+    <p class="modo">Versión local: los datos se guardan en este navegador</p>
+  </header>
+
+  <main>
+    <section class="resumen" aria-live="polite">
+      <h1 id="titular">Inventario</h1>
+      <p id="detalle" class="detalle"></p>
+    </section>
+
+    <section class="agregar" aria-labelledby="t-agregar">
+      <h2 id="t-agregar">Agregar producto</h2>
+      <form id="form-agregar" novalidate>
+        <label class="campo campo-nombre">Nombre
+          <input name="nombre" required maxlength="100" autocomplete="off" placeholder="Cuaderno profesional 100 hojas">
+        </label>
+        <label class="campo">SKU
+          <input name="sku" required maxlength="50" autocomplete="off" placeholder="CUA-100">
+        </label>
+        <label class="campo campo-num">Cantidad
+          <input name="cantidad" type="number" min="0" step="1" required placeholder="0">
+        </label>
+        <label class="campo campo-num">Mínimo
+          <input name="minimo" type="number" min="0" step="1" required placeholder="0">
+        </label>
+        <button type="submit" class="primario">Agregar producto</button>
+      </form>
+      <p id="error-agregar" class="error" role="alert" hidden></p>
+    </section>
+
+    <section class="inventario" aria-labelledby="t-inventario">
+      <div class="herramientas">
+        <h2 id="t-inventario">Mis productos</h2>
+        <label class="buscar">
+          <span class="oculto">Buscar por nombre o SKU</span>
+          <input id="buscar" type="search" placeholder="Buscar por nombre o SKU" autocomplete="off">
+        </label>
+        <div class="vistas" role="group" aria-label="Qué productos mostrar">
+          <button type="button" class="vista" data-vista="todos" aria-pressed="true">Todos <span id="n-todos"></span></button>
+          <button type="button" class="vista" data-vista="bajo" id="filtro-bajo" aria-pressed="false">Bajo mínimo <span id="n-bajo"></span></button>
+        </div>
+      </div>
+
+      <p id="error-lista" class="error" role="alert" hidden></p>
+
+      <div id="vacio" class="vacio" hidden>
+        <p id="vacio-texto"></p>
+      </div>
+
+      <div class="tabla-envoltura">
+        <table id="tabla" hidden>
+          <thead>
+            <tr>
+              <th scope="col">SKU</th>
+              <th scope="col">Producto</th>
+              <th scope="col" class="num">Cantidad</th>
+              <th scope="col" class="num">Mínimo</th>
+              <th scope="col" class="col-nivel">Nivel</th>
+              <th scope="col"><span class="oculto">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody id="cuerpo"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>Mini Inventario para papelería. Hecho por AngelF007.</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

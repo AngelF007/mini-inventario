@@ -316,6 +316,41 @@ tr.editando td.num input { width: 96px; text-align: right; }
   .vista { flex: 1; }
 }
 
+/* En celular la tabla no cabe: cada producto se muestra como tarjeta
+   para que se vean el mínimo, el nivel y los botones sin deslizar. */
+@media (max-width: 640px) {
+  .tabla-envoltura { overflow: visible; background: transparent; border: 0; box-shadow: none; }
+  #tabla, #tabla tbody { display: block; }
+  #tabla thead { display: none; }
+  #cuerpo tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    background: var(--papel);
+    border: 1px solid var(--linea);
+    border-radius: var(--radio);
+  }
+  #cuerpo tr.bajo { background: var(--rojo-claro); border-color: #f3c3be; }
+  #cuerpo tr.editando { background: #f3f6fd; }
+  #cuerpo td { padding: 0; border: 0; background: transparent; white-space: normal; }
+  #cuerpo td:nth-child(1), #cuerpo td:nth-child(2), #cuerpo td:nth-child(5), #cuerpo td.acciones { grid-column: 1 / -1; }
+  #cuerpo td.producto { font-size: 1.05rem; }
+  #cuerpo td.num { text-align: left; }
+  #cuerpo td[data-etiqueta]::before {
+    content: attr(data-etiqueta);
+    display: block;
+    font-size: .75rem; font-weight: 600;
+    color: var(--tinta-suave);
+  }
+  #cuerpo td.vacia { display: none; }
+  #cuerpo .nivel { min-width: 0; }
+  #cuerpo td.acciones { text-align: left; }
+  #cuerpo td.acciones button { min-height: 40px; }
+  tr.editando td.num input { width: 100%; text-align: left; }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .barra .relleno { transition: width .35s ease; }
 }

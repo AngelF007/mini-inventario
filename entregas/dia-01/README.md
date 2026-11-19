@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-11-18 · **Repositorio:** https://github.com/AngelF007/mini-inventario · **Agente:** Claude · **Sistema:** Windows + Scoop
 
-![Prueba en limpio](captura-prueba-limpio.png)
+![Prueba en limpio](Captura.png)
 
 ---
 

@@ -1,6 +1,6 @@
 # Bitácora — Día 1: Mini Inventario
 
-**Fecha:** 2026-11-18 / 19 · **Repositorio:** https://github.com/AngelF007/mini-inventario · **Asistente:** Claude (app de escritorio, con navegador integrado) · **Equipo:** Windows
+**Fecha:** 2026-11-18 · **Repositorio:** https://github.com/AngelF007/mini-inventario · **Agente:** Claude · **Sistema:** Windows + Scoop
 
 ![Prueba en limpio](captura-prueba-limpio.png)
 
@@ -8,108 +8,74 @@
 
 ## 1. Prompts clave
 
-| # | Prompt | Resultado |
+1. **Repositorio:** *"Crea en esta carpeta un repositorio Git llamado mini-inventario. Usa gh para publicarlo como repositorio público en mi cuenta. Agrega un README corto que indique que el proyecto requiere Node.js 22 y Python 3.12, y un .gitignore para Node y Python que excluya .env, .venv y node_modules. Antes de ejecutar cada comando, explícame qué hace."*
+2. **Reglas del proyecto:** *"Crea el archivo de instrucciones de este proyecto (CLAUDE.md si eres Claude Code, AGENTS.md si eres Codex). Explica que Mini Inventario es una web de inventario, que el proyecto usa Node.js 22 y Python 3.12, que cada cambio va en una rama con pull request, que nunca se suben llaves ni archivos .env, y que debes pedir aprobación antes de borrar datos o desplegar. Máximo 20 líneas."*
+3. **Extra:** *"Agrega al README una sección «Cómo empezar» con los pasos para clonar el proyecto y comprobar las versiones."*
+
+---
+
+## 2. Lo que hice
+
+| Paso | Qué hice | Resultado |
 |---|---|---|
-| 1 | Le di al asistente la guía del Día 1 (PDF y HTML) y le pedí: *"hazme esta act por favor"* | Preparó README, `.gitignore`, `CLAUDE.md` y los comandos para Windows |
-| 2 | **Prompt de la guía para el repositorio:** *"Crea en esta carpeta un repositorio Git llamado mini-inventario. Usa gh para publicarlo como repositorio público en mi cuenta. Agrega un README corto que indique que el proyecto requiere Node.js 22 y Python 3.12, y un .gitignore para Node y Python que excluya .env, .venv y node_modules. Antes de ejecutar cada comando, explícame qué hace."* | Repositorio `mini-inventario` público con README y `.gitignore` |
-| 3 | **Prompt de la guía para las reglas:** *"Crea el archivo de instrucciones de este proyecto (CLAUDE.md si eres Claude Code, AGENTS.md si eres Codex)… Máximo 20 líneas."* | `CLAUDE.md` de 17 líneas (comprobado con `wc -l`) |
-| 4 | *"hazme toda la act tú"* (después de atorarme con `gh auth login`) | Cambio de plan: el asistente creó el repo desde la web de GitHub |
-| 5 | *"ponla privada"* → *"ponlo en público, me equivoqué"* | Primero me advirtió del costo y después hizo cada cambio (ver 3.2) |
-| 6 | *"hazme bien el README"* (punto extra «Si terminas antes») | README completo con sección **Cómo empezar** |
+| 1. Terminal y GitHub | Instalé Scoop y con él `git`, `gh` y `pwsh` | Las 3 herramientas quedaron en `C:\Users\migue\scoop\shims` |
+| 2. Repositorio | Le di al agente el prompt 1, revisé el README y el `.gitignore` y aprobé la publicación | Repo público `AngelF007/mini-inventario` |
+| 3. Node y Python | Instalé `nodejs22` y `python312` con Scoop y comprobé las versiones | Ver sección 5 |
+| 4. Reglas | Le di el prompt 2 y revisé que `CLAUDE.md` tuviera las reglas de ramas, llaves y aprobación | `CLAUDE.md` de 17 líneas (máximo 20) |
+| 5. Prueba en limpio | Cloné el repo en otra carpeta y tomé la captura | Ver sección 6 |
+| Extra | Le pedí al agente mejorar el README con la sección «Cómo empezar» | README completo con instalación y estructura |
 
 ---
 
-## 2. Incidencias
+## 3. Errores y problemas
 
-### 2.1 Error de herramienta: el asistente no podía usar mi terminal
-- **Qué pasó:** el asistente intentó trabajar en mi computadora, pero las terminales (PowerShell) tienen el teclado bloqueado para él. Además, el sistema de permisos le **negó el acceso** a mi carpeta `Documents`.
-- **Consecuencia:** no podía instalar programas ni ejecutar `git`/`gh` por mí. Las instalaciones las hice yo con Scoop.
-- **Solución:** inicié sesión en GitHub en el navegador integrado de la app (la contraseña la escribí yo), y desde ahí el asistente creó el repositorio y los archivos.
+### 3.1 Error de la IA: no respetó su propia regla de ramas
+`CLAUDE.md` dice *"cada cambio va en una rama nueva y se integra con pull request"*, pero el agente subió todos los cambios **directo a `main`**.
+**Cómo lo detecté:** al revisar el historial del repo en GitHub no había ninguna rama ni pull request.
+**Lección:** no basta con escribir las reglas; hay que revisar que el agente las cumpla. Desde el Día 2 le voy a pedir explícitamente una rama y un PR por cada cambio.
 
-### 2.2 Me atoré con `gh auth login`
-- **Qué pasó:** no encontraba "el código" que pedía GitHub. Las primeras instrucciones del asistente no dejaban claro que el código de 8 caracteres lo muestra **PowerShell**, no GitHub.
-- **Solución:** en lugar de seguir con `gh`, usé el inicio de sesión en la web. Para la prueba en limpio usé `git clone` con la URL HTTPS, que no necesita sesión porque el repo es público.
+### 3.2 Error de la IA: instrucciones confusas para `gh auth login`
+El agente me dijo que pegara "el código" en GitHub sin aclarar que ese código de 8 caracteres lo muestra **PowerShell**, no GitHub. Me atoré varios minutos. Lo resolví iniciando sesión directamente en github.com, y para la prueba en limpio usé `git clone` con HTTPS, que no necesita `gh` porque el repo es público.
 
-### 2.3 Error de la IA: no siguió su propia regla de ramas
-- **Qué pasó:** `CLAUDE.md` dice *"cada cambio va en una rama nueva y se integra con pull request"*, pero el asistente hizo todos los commits **directamente en `main`**.
-- **Cómo lo detecté:** al revisar el historial de commits en GitHub, no hay ninguna rama ni pull request.
-- **Lección:** las reglas de `CLAUDE.md` hay que pedirlas y verificarlas. A partir del Día 2, cada cambio irá en una rama con PR.
-
-### 2.4 Detalle: acentos en Windows PowerShell 5.1
-- `cat README.md` mostró **"CÃ³mo"** en lugar de **"Cómo"**. El archivo está bien (en GitHub se ve correcto). Es un problema de codificación de Windows PowerShell 5.1.
-- Además, hice la prueba en PowerShell 5.1 y no en **PowerShell 7** (`pwsh`) como pide la guía. En PowerShell 7 los acentos se ven bien.
+### 3.3 Acentos en Windows PowerShell 5.1
+Al hacer `cat README.md` salió **"CÃ³mo"** en lugar de **"Cómo"**. En GitHub el archivo se ve bien: es un problema de codificación de Windows PowerShell 5.1. La guía pide trabajar en **PowerShell 7** (`pwsh`), que muestra los acentos correctamente. Desde el Día 2 trabajaré ahí.
 
 ---
 
-## 3. Comandos y decisiones aprobados o rechazados
+## 4. Comandos y decisiones aprobados o rechazados
 
-### 3.1 Aprobado: crear el repositorio público
-- **Qué hace:** crea `AngelF007/mini-inventario` como **público** y sube README, `.gitignore` y `CLAUDE.md`. Es el equivalente en la web de `gh repo create mini-inventario --public --source=. --push`.
-- **Por qué lo aprobé:** la actividad pide un repositorio público y revisé el contenido de cada archivo antes de subirlo.
-
-### 3.2 Cambio de visibilidad: privado → público
-- Le pedí ponerlo **privado** por miedo a que copiaran mi trabajo. El asistente **no lo hizo de inmediato**: me avisó que el criterio "Repositorio: es público" vale **25 puntos** y que mi profesor no podría ver el enlace. Elegí hacerlo privado de todos modos.
-- Minutos después me di cuenta del error y pedí volverlo a **público**. El asistente comprobó que el repositorio se ve sin iniciar sesión.
-- **Estado final:** público ✅
-
-### 3.3 Rechazado: acceso a mi carpeta Documents
-- El permiso para que el asistente entrara a mi carpeta `Documents` fue **denegado**. Así no tuvo acceso a mis otros archivos, y no hacía falta para la actividad.
-
-> **Seguridad:** la contraseña de GitHub la escribí yo en la página oficial (github.com). Nunca la pegué en el chat.
+- ✅ **Aprobé** crear el repositorio **público** (equivale a `gh repo create mini-inventario --public --source=. --push`), porque la actividad lo pide y antes revisé el contenido de cada archivo.
+- 🔁 **Cambié de opinión con la visibilidad:** pedí ponerlo privado para que no copiaran mi trabajo. El agente me advirtió que el criterio "Repositorio: es público" vale 25 puntos y que mi profesor no podría ver el enlace. Lo puse privado de todos modos, pero luego lo regresé a **público**. Estado final: público.
+- ❌ **Acceso denegado:** el permiso para que el agente entrara a mi carpeta `Documents` fue rechazado. No era necesario para la actividad y así no tuvo acceso a mis otros archivos.
+- 🔒 La contraseña de GitHub la escribí yo en github.com. Nunca la compartí con el agente.
 
 ---
 
-## 4. Verificación del entorno
+## 5. Verificación del entorno
 
-Salida de `node --version; npm --version; python --version`, ejecutado por mí en PowerShell:
+`node --version; npm --version; python --version`
 
 | Herramienta | Versión | ¿Cumple? |
 |---|---|---|
-| Node.js | v22.23.5 | ✅ (pide 22.20 o superior) |
+| Node.js | v22.23.5 | ✅ (mínimo 22.20) |
 | npm | 10.9.9 | ✅ |
 | Python | 3.12.10 | ✅ |
 
-Con `Get-Command` confirmé que `scoop`, `git`, `gh`, `pwsh`, `node` y `python` están instalados desde Scoop (`C:\Users\migue\scoop\...`).
-**Nota:** en Windows con Scoop el comando es `python`; `python3` puede no existir.
+**Nota:** en Windows con Scoop el comando es `python`, no `python3`.
 
 ---
 
-## 5. Prueba en limpio
-
-Ejecutada por mí en PowerShell, en `C:\Users\migue\Documents`:
+## 6. Prueba en limpio
 
 ```powershell
+cd ~\Documents
 git clone https://github.com/AngelF007/mini-inventario.git prueba-inventario
 cd prueba-inventario
 git ls-files
 cat README.md
 ```
 
-- **Clonación:** correcta (14 objetos).
+- **Clonación:** correcta.
 - **`git ls-files`:** `.gitignore`, `CLAUDE.md`, `README.md`, `entregas/dia-01/README.md`.
-- **`cat README.md`:** muestra los requisitos **Node.js 22 (22.20 o superior)** y **Python 3.12**.
-- **Evidencia:** `captura-prueba-limpio.png` (arriba). La captura es anterior a la mejora del README (commit `ac40ab5`). Los requisitos no cambiaron.
-
----
-
-## 6. Historial de commits
-
-| Commit | Hora (CDMX) | Cambio |
-|---|---|---|
-| `85a823b` | 00:06 | README inicial con requisitos |
-| `03f7098` | 00:06 | `.gitignore` (excluye `.env`, `.venv`, `node_modules`) |
-| `44272d8` | 00:07 | `CLAUDE.md` con las reglas del proyecto |
-| `2f9623b` | 00:07 | Esta bitácora (`entregas/dia-01/README.md`) |
-| `ac40ab5` | 00:24 | README completo con sección **Cómo empezar** (extra) |
-
----
-
-## 7. Checklist de la rúbrica
-
-| Criterio | Evidencia | Puntos |
-|---|---|---|
-| Repositorio | Público; el README indica Node.js 22 y Python 3.12 | 25 |
-| Prueba en limpio | Captura con `git ls-files` y `cat README.md` de una copia recién clonada | 25 |
-| Instrucciones | `CLAUDE.md` con reglas de ramas, llaves y aprobación | 20 |
-| Protección de secretos | `.gitignore` excluye `.env`, `.venv` y `node_modules` | 10 |
-| Bitácora | Este archivo: prompts, errores de la IA, decisiones y verificación | 20 |
+- **`cat README.md`:** muestra los requisitos **Node.js 22** y **Python 3.12**.
+- **Evidencia:** la captura de arriba. La tomé antes de mejorar el README; los requisitos son los mismos.

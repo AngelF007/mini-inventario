@@ -65,7 +65,7 @@ function traducirError(error) {
 
 function traducirErrorDeSesion(error) {
   const mensaje = (error?.message || '').toLowerCase();
-  if (mensaje.includes('invalid login credentials')) return new Error('Correo o contraseña incorrectos.');
+  if (mensaje.includes('invalid login credentials')) return new Error('El correo o la contraseña no coinciden.');
   if (mensaje.includes('already registered')) return new Error('Ese correo ya tiene una cuenta.');
   if (mensaje.includes('email not confirmed')) return new Error('Confirma tu correo antes de entrar.');
   if (mensaje.includes('password')) return new Error('La contraseña no cumple los requisitos (mínimo 8 caracteres).');

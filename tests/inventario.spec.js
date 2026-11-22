@@ -66,16 +66,56 @@ test.describe('Productos', () => {
     await expect(filaIgual).toContainText('Suficiente');
   });
 
-  test('edita la cantidad y cambia el estado', async ({ page }) => {
+  // Fila que está en modo edición: es la única que tiene el botón "Guardar".
+  function filaEnEdicion(page) {
+    return page.getByRole('row').filter({ has: page.getByRole('button', { name: 'Guardar' }) });
+  }
+
+  test('edita el nombre y la cantidad y cambia el estado', async ({ page }) => {
     const sku = skuUnico('EDI');
     creados.push(sku);
     await agregarProducto(page, { nombre: 'Prueba hojas', sku, cantidad: 10, minimo: 5 });
-    const fila = filaPorSku(page, sku);
-    await fila.getByRole('button', { name: 'Editar' }).click();
-    const edicion = page.locator('#cuerpo tr.editando');
-    await edicion.locator('[name=cantidad]').fill('1');
+    await expect(filaPorSku(page, sku)).toContainText('Suficiente');
+
+    await filaPorSku(page, sku).getByRole('button', { name: 'Editar' }).click();
+    const edicion = filaEnEdicion(page);
+    await edicion.getByRole('textbox', { name: 'Nombre' }).fill('Prueba hojas editada');
+    await edicion.getByRole('spinbutton', { name: 'Cantidad' }).fill('1');
     await edicion.getByRole('button', { name: 'Guardar' }).click();
-    await expect(filaPorSku(page, sku)).toContainText('Bajo mínimo: faltan 4');
+
+    // Sale del modo edición y la fila muestra los datos nuevos.
+    await expect(filaEnEdicion(page)).toHaveCount(0);
+    const fila = filaPorSku(page, sku);
+    await expect(fila).toContainText('Prueba hojas editada');
+    await expect(fila).toHaveClass(/\bbajo\b/);
+    await expect(fila).toContainText('Bajo mínimo: faltan 4');
+  });
+
+  test('no guarda la edición con el nombre vacío', async ({ page }) => {
+    const sku = skuUnico('EDI');
+    creados.push(sku);
+    await agregarProducto(page, { nombre: 'Prueba carpeta', sku, cantidad: 10, minimo: 5 });
+
+    await filaPorSku(page, sku).getByRole('button', { name: 'Editar' }).click();
+    const edicion = filaEnEdicion(page);
+    await edicion.getByRole('textbox', { name: 'Nombre' }).fill('');
+    await edicion.getByRole('spinbutton', { name: 'Cantidad' }).fill('1');
+    await edicion.getByRole('button', { name: 'Guardar' }).click();
+
+    // Mensaje exacto de validar() en public/productos.js; sigue en edición.
+    await expect(page.getByRole('alert')).toHaveText('Falta: nombre.');
+    await expect(edicion).toHaveCount(1);
+
+    // Al cancelar y recargar, la fila trae de Supabase los datos originales:
+    // así se comprueba que la base no cambió, no solo la pantalla.
+    await edicion.getByRole('button', { name: 'Cancelar' }).click();
+    await page.reload();
+    await expect(page.locator('#pantalla-inventario')).toBeVisible();
+    await expect(page.locator('#cargando')).toBeHidden();
+    const fila = filaPorSku(page, sku);
+    await expect(fila).toContainText('Prueba carpeta');
+    await expect(fila).toContainText('Suficiente');
+    await expect(fila).not.toHaveClass(/\bbajo\b/);
   });
 
   test('no guarda con campos vacíos', async ({ page }) => {

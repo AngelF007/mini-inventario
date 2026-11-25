@@ -14,6 +14,7 @@ COPY package.json package-lock.json ./
 
 # Instala exactamente lo del lock y sin dependencias de desarrollo (sin Playwright).
 RUN npm ci --omit=dev && npm cache clean --force
+RUN npm run no-existe
 
 # Copia solo el código que la app necesita. Nada de .env, tests ni entregas:
 # las llaves llegan como variables de entorno al correr el contenedor.

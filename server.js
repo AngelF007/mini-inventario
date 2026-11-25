@@ -49,6 +49,7 @@ app.get('/config.js', (req, res) => {
 // La web completa vive en public/.
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(PORT, () => {
-  console.log(`Mini Inventario en http://localhost:${PORT}`);
+// 0.0.0.0: escucha en todas las interfaces, necesario dentro de Docker y en Render.
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Mini Inventario escuchando en 0.0.0.0:${PORT}`);
 });

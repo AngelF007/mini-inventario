@@ -1,0 +1,8 @@
+== Reproducción (desplegado) en https://mini-inventario-m9u5.onrender.com — 2026-11-25T16:37:25.945Z
+/health: {"status":"ok"}
+Sesión iniciada como usuario1@prueba.com
+1) Agregar SKU "INC-MWWCJY00": GUARDADO
+2) Agregar SKU "inc-mwwcjy00": RECHAZADO — Ya tienes un producto con ese SKU.
+Filas con el SKU INC-MWWCJY00 (sin importar mayúsculas): 1 -> ["INC-MWWCJY00"]
+RESULTADO: el reporte YA NO ocurre (solo un producto con ese SKU).
+Captura: entregas\dia-10\reproduccion-desplegado.png

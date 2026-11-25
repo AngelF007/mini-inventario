@@ -1,0 +1,48 @@
+== npx playwright test -g 'mismo SKU con otras'  (antes, 2026-11-25 10:24)
+Codigo de salida: 1  (FALLA)
+
+
+Running 1 test using 1 worker
+
+  x  1 [chromium] › tests\inventario.spec.js:123:3 › Productos › no deja registrar el mismo SKU con otras mayúsculas (18.0s)
+
+
+  1) [chromium] › tests\inventario.spec.js:123:3 › Productos › no deja registrar el mismo SKU con otras mayúsculas 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected: "Ya tienes un producto con ese SKU."
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveText" getByRole('alert') with timeout 10000ms
+      - waiting for getByRole('alert')
+
+
+      134 |
+      135 |     // Mensaje que ya usa la app para un SKU repetido (public/productos.js).
+    > 136 |     await expect(page.getByRole('alert')).toHaveText('Ya tienes un producto con ese SKU.');
+          |                                           ^
+      137 |     // Solo debe quedar un producto con ese SKU (hasText no distingue mayúsculas).
+      138 |     await expect(page.locator('#cuerpo tr .sku').filter({ hasText: sku })).toHaveCount(1);
+      139 |   });
+        at C:\Users\migue\Documents\prueba-inventario\tests\inventario.spec.js:136:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\inventario-Productos-no-de-14b31-mo-SKU-con-otras-mayúsculas-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\inventario-Productos-no-de-14b31-mo-SKU-con-otras-mayúsculas-chromium\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\inventario-Productos-no-de-14b31-mo-SKU-con-otras-mayúsculas-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\inventario-Productos-no-de-14b31-mo-SKU-con-otras-mayúsculas-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests\inventario.spec.js:123:3 › Productos › no deja registrar el mismo SKU con otras mayúsculas 

@@ -118,6 +118,26 @@ test.describe('Productos', () => {
     await expect(fila).not.toHaveClass(/\bbajo\b/);
   });
 
+  // Incidente del día 10: "Pude registrar dos productos con el mismo SKU".
+  // El SKU no debe repetirse aunque cambien las mayúsculas.
+  test('no deja registrar el mismo SKU con otras mayúsculas', async ({ page }) => {
+    const sku = skuUnico('DUP');
+    creados.push(sku); // borrarPorSku borra todas las filas con ese SKU, sin importar mayúsculas
+    await agregarProducto(page, { nombre: 'Prueba SKU original', sku, cantidad: 4, minimo: 2 });
+
+    const form = page.locator('#form-agregar');
+    await form.getByLabel('Nombre').fill('Prueba SKU repetido');
+    await form.getByLabel('SKU').fill(sku.toLowerCase());
+    await form.getByLabel('Cantidad').fill('1');
+    await form.getByLabel('Mínimo').fill('1');
+    await form.getByRole('button', { name: 'Agregar producto' }).click();
+
+    // Mensaje que ya usa la app para un SKU repetido (public/productos.js).
+    await expect(page.getByRole('alert')).toHaveText('Ya tienes un producto con ese SKU.');
+    // Solo debe quedar un producto con ese SKU (hasText no distingue mayúsculas).
+    await expect(page.locator('#cuerpo tr .sku').filter({ hasText: sku })).toHaveCount(1);
+  });
+
   test('no guarda con campos vacíos', async ({ page }) => {
     const antes = await page.locator('#cuerpo tr').count();
     await page.locator('#form-agregar').getByRole('button', { name: 'Agregar producto' }).click();

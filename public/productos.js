@@ -28,7 +28,8 @@ function aEntero(valor) {
 function validar({ nombre, sku, cantidad, minimo }) {
   const limpio = {
     nombre: String(nombre ?? '').trim(),
-    sku: String(sku ?? '').trim(),
+    // El SKU se guarda en MAYÚSCULAS: 'cua-100' y 'CUA-100' son el mismo producto (incidente día 10).
+    sku: String(sku ?? '').trim().toUpperCase(),
     cantidad: aEntero(cantidad),
     minimo: aEntero(minimo),
   };

@@ -1,0 +1,8 @@
+== Reproducción (antes) en https://mini-inventario-m9u5.onrender.com — 2026-11-25T16:17:31.291Z
+/health: {"status":"ok"}
+Sesión iniciada como usuario1@prueba.com
+1) Agregar SKU "INC-MWWBUTUE": GUARDADO
+2) Agregar SKU "inc-mwwbutue": GUARDADO
+Filas con el SKU INC-MWWBUTUE (sin importar mayúsculas): 2 -> ["INC-MWWBUTUE","inc-mwwbutue"]
+RESULTADO: el reporte SE REPRODUCE (SKU duplicado guardado).
+Captura: entregas\dia-10\reproduccion-antes.png

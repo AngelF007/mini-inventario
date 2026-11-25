@@ -1,0 +1,8 @@
+== Reproducción (despues) en https://mini-inventario-m9u5.onrender.com — 2026-11-25T16:36:07.181Z
+/health: {"status":"ok"}
+Sesión iniciada como usuario1@prueba.com
+1) Agregar SKU "INC-MWWCIADO": GUARDADO
+2) Agregar SKU "inc-mwwciado": RECHAZADO — Ya tienes un producto con ese SKU.
+Filas con el SKU INC-MWWCIADO (sin importar mayúsculas): 1 -> ["INC-MWWCIADO"]
+RESULTADO: el reporte YA NO ocurre (solo un producto con ese SKU).
+Captura: entregas\dia-10\reproduccion-despues.png

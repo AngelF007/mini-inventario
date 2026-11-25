@@ -25,7 +25,9 @@ servidores, llamadas, resultados, final = [], [], {}, {}
 for e in eventos:
     if e.get("type") == "system" and e.get("subtype") == "init":
         servidores = [f"{s.get('name')} ({s.get('status')})" for s in e.get("mcp_servers", [])]
-    for bloque in (e.get("message") or {}).get("content") or []:
+    mensaje = e.get("message")
+    contenido_mensaje = mensaje.get("content") if isinstance(mensaje, dict) else None
+    for bloque in contenido_mensaje if isinstance(contenido_mensaje, list) else []:
         if not isinstance(bloque, dict):
             continue
         if bloque.get("type") == "tool_use":

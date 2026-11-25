@@ -1,0 +1,9 @@
+== npx playwright test -g 'mismo SKU con otras'  (despues, 2026-11-25 10:33)
+Codigo de salida: 0  (PASA)
+
+
+Running 1 test using 1 worker
+
+  ok 1 [chromium] › tests\inventario.spec.js:123:3 › Productos › no deja registrar el mismo SKU con otras mayúsculas (8.6s)
+
+  1 passed (11.5s)

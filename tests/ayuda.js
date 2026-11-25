@@ -38,12 +38,15 @@ function filaPorSku(page, sku) {
 }
 
 // Borra desde la interfaz (RLS solo deja borrar lo propio). No falla si ya no existe.
+// Borra todas las filas que coincidan (por si una prueba dejó el SKU repetido).
 async function borrarPorSku(page, sku) {
-  const fila = filaPorSku(page, sku);
-  if ((await fila.count()) === 0) return;
-  await fila.getByRole('button', { name: 'Eliminar' }).click();
-  await fila.getByRole('button', { name: 'Sí, eliminar' }).click();
-  await expect(filaPorSku(page, sku)).toHaveCount(0);
+  const filas = filaPorSku(page, sku);
+  for (let n = await filas.count(); n > 0; n = await filas.count()) {
+    const fila = filas.first();
+    await fila.getByRole('button', { name: 'Eliminar' }).click();
+    await fila.getByRole('button', { name: 'Sí, eliminar' }).click();
+    await expect(filas).toHaveCount(n - 1);
+  }
 }
 
 module.exports = { EMAIL, exigirCredenciales, skuUnico, iniciarSesion, agregarProducto, filaPorSku, borrarPorSku };

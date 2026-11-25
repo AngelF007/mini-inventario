@@ -1,0 +1,29 @@
+# Secretos: nunca entran a la imagen.
+.env
+.env.*
+!.env.example
+
+# Dependencias locales: se instalan dentro de la imagen con npm ci.
+node_modules
+
+# Pruebas, evidencias y reportes: no se necesitan para correr la app.
+tests
+entregas
+playwright-report
+test-results
+scripts
+playwright.config.js
+
+# Servidor MCP en Python y su entorno virtual.
+mcp-inventario
+.venv
+
+# Git, CI, documentación y configuración del agente.
+.git
+.github
+.claude
+docs
+supabase
+*.md
+Dockerfile
+.dockerignore

@@ -1,0 +1,41 @@
+== Prueba local del contenedor (2026-11-24 20:28)
+Docker Engine: 29.9.3
+
+> docker build -t mini-inventario .
+  #11 DONE 0.0s
+  System.Management.Automation.RemoteException
+  #12 exporting to image
+  #12 exporting layers
+  #12 exporting layers 0.2s done
+  #12 exporting manifest sha256:f86293a17269b33abfbe98c920959767b120d5d4dae8022c65a48d216808e458 0.0s done
+  #12 exporting config sha256:5a891b93baf340d13d841dbf547e42a3157fc80009ee69f5a6886acc54717250 0.0s done
+  #12 exporting attestation manifest sha256:bb2c7119e38fb22e8880513920cc0a5d3602725177e2bf891ce27f7260f5d0dc 0.0s done
+  #12 exporting manifest list sha256:8e38677027431e74f219cbb318436946a9401001d3b6eeb8a0e7072dd162722b 0.0s done
+  #12 naming to docker.io/library/mini-inventario:latest done
+  #12 unpacking to docker.io/library/mini-inventario:latest
+  #12 unpacking to docker.io/library/mini-inventario:latest 1.5s done
+  #12 DONE 1.8s
+  System.Management.Automation.RemoteException
+  View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/fv7lghva78zmo7044zz14ppl4
+
+> La imagen no trae secretos ni archivos de mas:
+  node_modules
+  package-lock.json
+  package.json
+  public
+  server.js
+  SIN_.env_DENTRO_DE_LA_IMAGEN
+
+> docker run --env-file .env -e PORT=3000 -p 3000:3000 mini-inventario   (en segundo plano, con nombre)
+
+> GET http://localhost:3000/health
+  {"status":"ok"}
+
+> GET http://localhost:3000/config.js
+  Trae la URL de Supabase: True. Trae la llave publicable (no secreta): True
+
+> docker logs mini-inventario-prueba
+  Mini Inventario escuchando en 0.0.0.0:3000
+
+Inicio de sesion en http://localhost:3000 desde el contenedor: OK
+Contenedor detenido y borrado.
